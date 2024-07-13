@@ -22,6 +22,7 @@
       "@Components/*": ["./src/components/*"],
       "@Utils/*": ["./src/utils/*"],
       "@Libs/*": ["./src/libs/*"],
+      "@Styles/*": ["./src/styles/*"],
       "@Icons/*": ["./public/icons/*"],
     }
   },
