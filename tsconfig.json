@@ -21,7 +21,7 @@
       "@/*": ["./src/*"],
       "@Components/*": ["./src/components/*"],
       "@Utils/*": ["./src/utils/*"],
-      "@Libs/*": ["./src/libs/*"],
+      "@Lib/*": ["./src/lib/*"],
       "@Styles/*": ["./src/styles/*"],
       "@Icons/*": ["./public/icons/*"],
     }
