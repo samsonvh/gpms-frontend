@@ -7,7 +7,7 @@ import { z } from "zod";
 import ProductFormDefinition from "./sections/definition";
 import ProductFormHeader from "./sections/Header";
 import ProductFormProductionProcess from "./sections/ProductionProcess";
-import ProductFormSpecification from "./sections/Specification";
+import ProductFormSpecification from "./sections/specification";
 import { useEffect } from "react";
 
 const formSchema = z.object({

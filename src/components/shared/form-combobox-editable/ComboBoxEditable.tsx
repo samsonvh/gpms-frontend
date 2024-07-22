@@ -27,10 +27,12 @@ const FormComboboxEditable = ({
   field,
   items,
   setValue,
+  onSelect
 }: {
   field: ControllerRenderProps<any, any>;
   items: any[];
   setValue: UseFormSetValue<any>;
+  onSelect?: () => void
 }) => {
   const inputRef = useRef(null);
   const [selected, setSelected] = useState(field.value);
@@ -41,8 +43,11 @@ const FormComboboxEditable = ({
       setSelected(item.name);
       setValue(field.name, item.name);
       setFocus(false);
+      if(onSelect){
+        onSelect();
+      }
     },
-    [field, setValue]
+    [field, setValue, onSelect]
   );
 
   const handleChangeValue = useCallback(

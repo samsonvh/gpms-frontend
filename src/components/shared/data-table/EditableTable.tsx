@@ -10,6 +10,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -42,6 +43,7 @@ import FormComboboxEditable from "../form-combobox-editable/ComboBoxEditable";
 declare module "@tanstack/table-core" {
   export interface ColumnMeta<TData extends RowData, TValue> {
     inputType: string;
+    items?: any[];
   }
 
   export interface TableMeta<TData extends RowData> {
@@ -50,6 +52,8 @@ declare module "@tanstack/table-core" {
     setEditableRows: Dispatch<SetStateAction<[]>>;
     editableRows: any;
     revertData: (rowIndex: number, isRevert: boolean) => void;
+    addRow: any;
+    removeRow: any;
   }
 }
 
@@ -79,6 +83,11 @@ export const FormEditableTableCell = ({
   const headerName = column.columnDef.header?.toString();
   const inputName = formObject + "." + row.index + "." + columnId;
   const inputType = columnMeta?.inputType;
+  const items = columnMeta?.items;
+
+  const onSelect = () => {
+    form?.setValue(`${formObject}.${row.index}`, items![row.index]);
+  };
 
   return tableMeta?.editableRows[row.id] ? (
     <FormField
@@ -92,8 +101,9 @@ export const FormEditableTableCell = ({
                 <Input type="hidden" placeholder={headerName} {...field} />
                 <FormComboboxEditable
                   setValue={form!.setValue}
-                  items={categories}
+                  items={items!}
                   field={field}
+                  onSelect={onSelect}
                 />
               </div>
             ) : (
@@ -147,7 +157,17 @@ export const ActionCell = ({
   );
 };
 
-let count = 0;
+const FooterCell = ({ table }: { table: TanstackTable<any> }) => {
+  const tableMeta = table.options.meta;
+
+  return (
+    <div>
+      <Button type="button" onClick={tableMeta?.addRow}>
+        New
+      </Button>
+    </div>
+  );
+};
 
 const EditableTable = <TData extends object, TValue>({
   columns,
@@ -173,16 +193,37 @@ const EditableTable = <TData extends object, TValue>({
     }
   };
 
+  const addRow = () => {
+    const newRow: { [key: string]: any } = {};
+    columns.map((column) => {
+      switch (column.meta?.inputType) {
+        case "text":
+        case "select":
+          newRow[column.id!] = "";
+          break;
+        case "number":
+          newRow[column.id!] = 1;
+          break;
+      }
+    });
+    fieldArray.append(newRow);
+    form?.setValue(`${formObject}.${fieldArray.fields.length}`, newRow);
+    originalData.push(watchValue[fieldArray.fields.length]);
+  };
+  const removeRow = () => {};
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     meta: {
-      form: form,
-      formObject: formObject,
+      form,
+      formObject,
       editableRows,
       setEditableRows,
-      revertData: revertData,
+      revertData,
+      addRow,
+      removeRow,
     },
   });
 
@@ -228,6 +269,13 @@ const EditableTable = <TData extends object, TValue>({
           </TableRow>
         )}
       </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableHead colSpan={table.getCenterLeafColumns().length}>
+            <FooterCell table={table} />
+          </TableHead>
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 };
