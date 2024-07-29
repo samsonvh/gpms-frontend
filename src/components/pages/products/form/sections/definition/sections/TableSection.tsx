@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useAppSelector } from "@/lib/hook";
-import { Material, SemiFinishedProduct } from "@/types/product";
 import { ColumnDef } from "@tanstack/react-table";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
 
