@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppDispatch, useAppSelector } from "@/lib/hook";
 import { getCategoriesAsync } from "@/lib/redux/features/categorySlice";
+import { Category } from "@/types/product";
 import React, { useEffect } from "react";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
@@ -25,11 +26,11 @@ const InputSection = ({ form }: props) => {
 
   if (categories.length === 0) {
     dispatch(getCategoriesAsync());
+    console.log(categories)
   }
 
-  const onSelectCategory = (value: string) => {
-    // setValue("definition.category", value);
-    console.log(value);
+  const onSelectCategory = (item: Category) => {
+    setValue("definition.category", item.name);
   };
 
   return (
@@ -99,6 +100,7 @@ const InputSection = ({ form }: props) => {
                 <EditableComboBox
                   items={categories}
                   onSelect={onSelectCategory}
+                  field={field}
                 />
               </FormControl>
               <FormMessage />

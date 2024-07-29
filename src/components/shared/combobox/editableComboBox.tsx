@@ -7,7 +7,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 
 type props = {
@@ -18,13 +18,22 @@ type props = {
 };
 
 const EditableComboBox = ({ items, style, field, onSelect }: props) => {
+  const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
+
+  const handleSelect = useCallback((item: any) => {
+    setIsFocused(false);
+    if (onSelect) {
+      onSelect(item);
+    }
+  }, []);
 
   return (
     <div style={style} className="relative border rounded-md">
       <Command>
         <CommandInput
-          className="h-9"
+          ref={inputRef}
+          className="h-10"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           value={field?.value}
@@ -32,7 +41,7 @@ const EditableComboBox = ({ items, style, field, onSelect }: props) => {
         <div
           className={
             isFocused
-              ? "absolute block w-full max-h-40 top-full mt-1 border bg-white rounded-md overflow-scroll shadow-lg"
+              ? "absolute block w-full max-h-40 top-full mt-1 border bg-white rounded-md overflow-x-hidden overflow-y-scroll shadow-lg"
               : "hidden"
           }
         >
@@ -48,9 +57,8 @@ const EditableComboBox = ({ items, style, field, onSelect }: props) => {
                       event.preventDefault();
                       event.stopPropagation();
                     }}
-                    onSelect={(value) => {
-                      setIsFocused(false);
-                      onSelect(value);
+                    onSelect={() => {
+                      handleSelect(item);
                     }}
                   >
                     {item.name}
