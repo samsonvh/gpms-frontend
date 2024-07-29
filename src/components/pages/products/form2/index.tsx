@@ -1,14 +1,13 @@
 "use client";
-import { Form } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import React, { useEffect } from "react";
+import FormDefinitionSection from "./sections/definition";
 import { z } from "zod";
-
-import ProductFormDefinition from "./sections/definition";
-import ProductFormHeader from "./sections/header";
-import ProductFormProductionProcess from "./sections/productionProcess";
-import ProductFormSpecification from "./sections/specification";
-import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAppDispatch, useAppSelector } from "@/lib/hook";
+import { getCategoriesAsync } from "@/lib/redux/features/categorySlice";
+import { setForm } from "@/lib/redux/features/productFormSlice";
+import { Form } from "@/components/ui/form";
 
 const formSchema = z.object({
   definition: z.object({
@@ -45,7 +44,7 @@ const formSchema = z.object({
   }),
 });
 
-const DefineProductForm = () => {
+const ProductForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,22 +80,11 @@ const DefineProductForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-  };
-
   return (
-    <>
-      <ProductFormHeader />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="px-8">
-          <ProductFormDefinition form={form} />
-          <ProductFormSpecification />
-          <ProductFormProductionProcess />
-        </form>
-      </Form>
-    </>
+    <Form {...form}>
+      <FormDefinitionSection form={form} />
+    </Form>
   );
 };
 
-export default DefineProductForm;
+export default ProductForm;

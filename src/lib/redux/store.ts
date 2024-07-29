@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import categorySlice from "./features/categorySlice";
 import productFormSectionSlice from "./features/productFormSectionSlice";
+import productFormSlice from "./features/productFormSlice";
 import materialSlice from "./features/materialSlice";
 
 export const makeStore = () => {
@@ -8,6 +9,7 @@ export const makeStore = () => {
     reducer: {
       categories: categorySlice,
       productFormSection: productFormSectionSlice,
+      productForm: productFormSlice,
       materials: materialSlice,
     },
   });

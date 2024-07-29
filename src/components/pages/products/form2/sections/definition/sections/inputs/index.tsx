@@ -1,4 +1,4 @@
-import ComboBoxEditable from "@/components/shared/form-combobox-editable/ComboBoxEditable";
+import EditableComboBox from "@/components/shared/combobox/editableComboBox";
 import {
   FormControl,
   FormField,
@@ -11,21 +11,32 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAppDispatch, useAppSelector } from "@/lib/hook";
 import { getCategoriesAsync } from "@/lib/redux/features/categorySlice";
 import React, { useEffect } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext, UseFormReturn } from "react-hook-form";
 
-const InputSection = ({ form }: { form: UseFormReturn<any> }) => {
+type props = {
+  form: UseFormReturn<any>;
+};
+
+const InputSection = ({ form }: props) => {
+  const { control, setValue } = useFormContext();
+
   const categories = useAppSelector((state) => state.categories.data);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  if (categories.length === 0) {
     dispatch(getCategoriesAsync());
-  }, []);
+  }
+
+  const onSelectCategory = (value: string) => {
+    // setValue("definition.category", value);
+    console.log(value);
+  };
 
   return (
-    <div className="grid grid-rows-7 gap-1">
-      <div className="row-span-1">
+    <div className="flex gap-8">
+      <div className="flex flex-col gap-5">
         <FormField
-          control={form.control}
+          control={control}
           name="definition.code"
           render={({ field }) => (
             <FormItem>
@@ -37,10 +48,8 @@ const InputSection = ({ form }: { form: UseFormReturn<any> }) => {
             </FormItem>
           )}
         />
-      </div>
-      <div className="row-span-1">
         <FormField
-          control={form.control}
+          control={control}
           name="definition.name"
           render={({ field }) => (
             <FormItem>
@@ -52,68 +61,62 @@ const InputSection = ({ form }: { form: UseFormReturn<any> }) => {
             </FormItem>
           )}
         />
-      </div>
-      <div className="row-span-1">
         <FormField
-          control={form.control}
-          name="definition.category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category:</FormLabel>
-              <FormControl>
-                <div>
-                  <Input type="hidden" placeholder="category" {...field} />
-                  <ComboBoxEditable
-                    setValue={form.setValue}
-                    items={categories}
-                    field={field}
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      <div className="row-span-1">
-        <FormField
-          control={form.control}
+          control={control}
           name="definition.sizes"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Sizes:</FormLabel>
               <FormControl>
-                <Input placeholder="size" {...field} />
+                <Input placeholder="sizes" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-      </div>
-      <div className="row-span-1">
         <FormField
-          control={form.control}
+          control={control}
           name="definition.colors"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Colors:</FormLabel>
               <FormControl>
-                <Input placeholder="color" {...field} />
+                <Input placeholder="colors" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
       </div>
-      <div className="row-span-2 flex">
+      <div className="flex flex-col gap-5">
         <FormField
-          control={form.control}
+          control={control}
+          name="definition.category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category:</FormLabel>
+              <FormControl>
+                <EditableComboBox
+                  items={categories}
+                  onSelect={onSelectCategory}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
           name="definition.description"
           render={({ field }) => (
-            <FormItem className="flex-grow flex flex-col">
+            <FormItem className="flex-grow">
               <FormLabel>Description:</FormLabel>
               <FormControl>
-                <Textarea className="flex-grow resize-none" placeholder="description" {...field} />
+                <Textarea
+                  className="h-[calc(100%-2rem)] resize-none"
+                  placeholder="description"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

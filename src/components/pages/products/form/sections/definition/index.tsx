@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/lib/hook";
 import { UseFormReturn } from "react-hook-form";
-import InputSection from "./sections/LeftSection";
-import RightSection from "./sections/RightSection";
+import InputSection from "./sections/leftSection";
+import RightSection from "./sections/rightSection";
 
 const ProductFormDefinition = ({ form }: { form: UseFormReturn<any> }) => {
   const productFormSection = useAppSelector(
@@ -13,7 +13,7 @@ const ProductFormDefinition = ({ form }: { form: UseFormReturn<any> }) => {
       id="product-definition"
       className={productFormSection.current == 0 ? "" : "h-0 overflow-hidden"}
     >
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-4 gap-x-8">
         <div className="col-span-1">
           <InputSection form={form} />
         </div>

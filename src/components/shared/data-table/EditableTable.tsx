@@ -40,22 +40,22 @@ import {
 } from "react-hook-form";
 import FormComboboxEditable from "../form-combobox-editable/ComboBoxEditable";
 
-declare module "@tanstack/table-core" {
-  export interface ColumnMeta<TData extends RowData, TValue> {
-    inputType: string;
-    items?: any[];
-  }
+// declare module "@tanstack/table-core" {
+//   export interface ColumnMeta<TData extends RowData, TValue> {
+//     inputType: string;
+//     items?: any[];
+//   }
 
-  export interface TableMeta<TData extends RowData> {
-    form?: UseFormReturn<any>;
-    formObject?: string;
-    setEditableRows: Dispatch<SetStateAction<[]>>;
-    editableRows: any;
-    revertData: (rowIndex: number, isRevert: boolean) => void;
-    addRow: any;
-    removeRow: any;
-  }
-}
+//   export interface TableMeta<TData extends RowData> {
+//     form?: UseFormReturn<any>;
+//     formObject?: string;
+//     setEditableRows: Dispatch<SetStateAction<[]>>;
+//     editableRows: any;
+//     revertData: (rowIndex: number, isRevert: boolean) => void;
+//     addRow: any;
+//     removeRow: any;
+//   }
+// }
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -228,8 +228,8 @@ const EditableTable = <TData extends object, TValue>({
   });
 
   return (
-    <Table>
-      <TableHeader>
+    <Table className="">
+      <TableHeader className="w-max">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
@@ -247,7 +247,7 @@ const EditableTable = <TData extends object, TValue>({
           </TableRow>
         ))}
       </TableHeader>
-      <TableBody>
+      <TableBody className="w-max">
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
             <TableRow

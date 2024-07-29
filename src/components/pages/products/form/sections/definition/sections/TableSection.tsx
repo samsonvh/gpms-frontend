@@ -138,46 +138,42 @@ const TableSection = ({ form }: { form: UseFormReturn<any> }) => {
 
   return (
     <>
-      <div className="row-span-1">
-        <FormField
-          control={form.control}
-          name={formObject.materials}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Materials:</FormLabel>
-              <FormControl>
-                <EditableTable
-                  form={form}
-                  formObject={formObject.materials}
-                  data={form.getValues(formObject.materials)}
-                  columns={materialsColumns}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      <div className="row-span-1">
-        <FormField
-          control={form.control}
-          name={formObject.semiFinishedProducts}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Semi-finished products:</FormLabel>
-              <FormControl>
-                <EditableTable
-                  form={form}
-                  formObject={formObject.semiFinishedProducts}
-                  data={form.getValues(formObject.semiFinishedProducts)}
-                  columns={semiFinishedProductsColumns}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+      <FormField
+        control={form.control}
+        name={formObject.materials}
+        render={({ field }) => (
+          <FormItem className="flex-auto flex flex-col">
+            <FormLabel>Materials:</FormLabel>
+            <FormControl>
+              <EditableTable
+                form={form}
+                formObject={formObject.materials}
+                data={form.getValues(formObject.materials)}
+                columns={materialsColumns}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name={formObject.semiFinishedProducts}
+        render={({ field }) => (
+          <FormItem className="flex-auto">
+            <FormLabel>Semi-finished products:</FormLabel>
+            <FormControl>
+              <EditableTable
+                form={form}
+                formObject={formObject.semiFinishedProducts}
+                data={form.getValues(formObject.semiFinishedProducts)}
+                columns={semiFinishedProductsColumns}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </>
   );
 };
