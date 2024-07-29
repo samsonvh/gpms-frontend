@@ -1,16 +1,14 @@
-"use client";
-
-import ProductForm from "@Components/pages/products/forms/form";
+import DefineProductForm from "@/components/pages/products/form";
+import StoreProvider from "@/components/shared/providers/StoreProvider";
 import React from "react";
 
 const DefineProductPage = () => {
   return (
-    <div>
-      DefineProductPage
+    <StoreProvider>
       <div>
-        <ProductForm />
+        <DefineProductForm />
       </div>
-    </div>
+    </StoreProvider>
   );
 };
 
