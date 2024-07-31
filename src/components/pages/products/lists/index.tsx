@@ -1,12 +1,14 @@
-import ProductItem from "../item";
-
+import ProductItem from "./item";
 export default function ProductsList({
   products,
 }: {
-  products: ProductsListProps | null;
+  products: ProductsListProps;
 }) {
   return (
-    <table id="table" className="w-full">
+    <table
+      id="products"
+      className="rounded-sm border mx-5 my-5 space-y-10 text-center"
+    >
       <thead>
         <tr>
           <th>Product Images</th>
@@ -20,7 +22,7 @@ export default function ProductsList({
         </tr>
       </thead>
       <tbody>
-        {products?.data.map((product: ProductProps) => (
+        {products.data.map((product: ProductProps) => (
           <tr key={product.id}>
             <ProductItem {...product} />
           </tr>

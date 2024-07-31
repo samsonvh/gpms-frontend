@@ -1,28 +1,21 @@
 "use client";
 import ProductsList from "@/components/pages/products/lists";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { SERVER_URI } from "../../../../utils/uri";
-const ProductListPage = () => {
-  const [products, setProducts] = useState<ProductsListProps | null>(null);
-  // {data:[],pageCount:0,pageIndex:0,pageSize:0,totalItem:0}
-  const accessToken = "asjdvbdsijvbiwvbwiebviwbvijdbvjdsbvkjasdbvbkjbajdvbl";
-  useEffect(() => {
-    axios
-      .get(`${SERVER_URI}/products`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        setProducts(res.data.data);
-      });
-  }, []);
-  return (
-    <>
-      <ProductsList products={products} />
-    </>
-  );
+import { useQuery } from "@tanstack/react-query";
+const ProductsListPage = () => {
+  const { isLoading, isError, data, error } = useQuery<any>({
+    queryKey: ["products"],
+    queryFn: () => fetch(`${SERVER_URI}/products`).then((res) => res.json()),
+  });
+  const products = data?.data;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+  return data === undefined ? <></> : <ProductsList products={products} />;
 };
 
-export default ProductListPage;
+export default ProductsListPage;
