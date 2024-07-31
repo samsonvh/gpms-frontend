@@ -10,33 +10,61 @@ import { cn } from "@/lib/utils";
 import React, { useCallback, useRef, useState } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 
-type props = {
-  items: any[];
+type Item = { id: any; name: string };
+
+type Props = {
+  items: Item[];
   style?: any;
   field?: ControllerRenderProps<any, any>;
   onSelect?: any;
+  onValueChange?: any;
 };
 
-const EditableComboBox = ({ items, style, field, onSelect }: props) => {
-  const inputRef = useRef(null);
+const EditableComboBox = ({
+  items,
+  style,
+  field,
+  onSelect,
+  onValueChange,
+}: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [inputValue, setInputValue] = useState(field ? field.value : "");
 
-  const handleSelect = useCallback((item: any) => {
-    setIsFocused(false);
-    if (onSelect) {
-      onSelect(item);
-    }
-  }, []);
+  const handleSelect = useCallback(
+    (item: Item) => {
+      inputRef.current?.blur();
+      setIsFocused(false);
+      setInputValue(item.name);
+      if (onSelect) {
+        onSelect(item);
+      }
+    },
+    [onSelect]
+  );
+
+  const handleValueChange = useCallback(
+    (value: string) => {
+      setInputValue(value);
+      if (onValueChange) {
+        onValueChange(value);
+      }
+    },
+    [onValueChange]
+  );
 
   return (
     <div style={style} className="relative border rounded-md">
       <Command>
         <CommandInput
           ref={inputRef}
-          className="h-10"
+          className="h-[calc(2.375rem)]"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          value={field?.value}
+          value={inputValue}
+          onValueChange={(value) => {
+            handleValueChange(value);
+          }}
         />
         <div
           className={
@@ -46,7 +74,7 @@ const EditableComboBox = ({ items, style, field, onSelect }: props) => {
           }
         >
           <CommandList>
-            <CommandEmpty>No results</CommandEmpty>
+            <CommandEmpty>This is a brand new item</CommandEmpty>
             <CommandGroup>
               {items.map((item) => {
                 return (

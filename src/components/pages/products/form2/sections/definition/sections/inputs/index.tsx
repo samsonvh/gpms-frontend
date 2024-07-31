@@ -26,15 +26,19 @@ const InputSection = ({ form }: props) => {
 
   if (categories.length === 0) {
     dispatch(getCategoriesAsync());
-    console.log(categories)
+    console.log(categories);
   }
 
   const onSelectCategory = (item: Category) => {
     setValue("definition.category", item.name);
   };
 
+  const onInputChange = (value: string) => {
+    setValue("definition.category", value);
+  };
+
   return (
-    <div className="flex gap-8">
+    <div className="flex gap-8 flex-none">
       <div className="flex flex-col gap-5">
         <FormField
           control={control}
@@ -100,6 +104,7 @@ const InputSection = ({ form }: props) => {
                 <EditableComboBox
                   items={categories}
                   onSelect={onSelectCategory}
+                  onValueChange={onInputChange}
                   field={field}
                 />
               </FormControl>

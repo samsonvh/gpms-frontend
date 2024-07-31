@@ -29,6 +29,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import FormCombobox from "../../combobox/formCombobox";
+import EditableComboBox from "../../combobox/editableComboBox";
 
 declare module "@tanstack/table-core" {
   export interface ColumnMeta<TData extends RowData, TValue> {
@@ -85,7 +86,7 @@ export const FormEditableCell = ({
             ) : inputType === "number" ? (
               <Input type="number" {...field} />
             ) : inputType === "select" ? (
-              <FormCombobox items={columnMeta?.items!} />
+              <EditableComboBox items={columnMeta?.items!} />
             ) : (
               <Input type="text" {...field} />
             )}
